@@ -1,5 +1,5 @@
 <?php
-// auteur: Vul hier je naam in
+// auteur: Dylano Nietveld
 // functie: algemene functies tbv hergebruik
 
 include_once "config.php";
@@ -28,13 +28,13 @@ include_once "config.php";
 
     // Menu-item   insert
     $txt = "
-    <h1>Crud Fietsen</h1>
+    <h1>Crud Bier</h1>
     <nav>
 		<a href='insert.php'>Toevoegen nieuwe fiets</a>
     </nav><br>";
     echo $txt;
 
-    // Haal alle fietsen record uit de tabel 
+    // Haal alle bier record uit de tabel 
     $result = getData(CRUD_TABLE);
 
     //print table
@@ -60,7 +60,7 @@ include_once "config.php";
     return $result;
  }
 
- // selecteer de rij van de opgeven id uit de table fietsen
+ // selecteer de rij van de opgeven id uit de table bier
  function getRecord($id){
     // Connect database
     $conn = connectDb();
@@ -103,16 +103,10 @@ function printCrudTabel($result){
         }
         
         // Wijzig knopje
-        $table .= "<td>
-            <form method='post' action='update.php?id=$row[id]' >       
-                <button>Wzg</button>	 
-            </form></td>";
+        $table .= "<td><button>Wzg</button></td>";
 
         // Delete knopje
-        $table .= "<td>
-            <form method='post' action='delete.php?id=$row[id]' >       
-                <button>Verwijder</button>	 
-            </form></td>";
+        $table .= "<td><button>Verwijder</button></td>";
 
         $table .= "</tr>";
     }
@@ -130,9 +124,9 @@ function updateRecord($row){
     // Maak een query 
     $sql = "UPDATE " . CRUD_TABLE .
     " SET 
-        merk = :merk, 
-        type = :type, 
-        prijs = :prijs
+        naam = :naam, 
+        soort = :soort, 
+        stijl = :stijl
     WHERE id = :id
     ";
 
@@ -140,9 +134,9 @@ function updateRecord($row){
     $stmt = $conn->prepare($sql);
     // Uitvoeren
     $stmt->execute([
-        ':merk'=>$row['merk'],
-        ':type'=>$row['type'],
-        ':prijs'=>$row['prijs'],
+        ':naam'=>$row['naam'],
+        ':soort'=>$row['soort'],
+        ':stijl'=>$row['stijl'],
         ':id'=>$row['id']
     ]);
 
@@ -157,17 +151,17 @@ function insertRecord($post){
 
     // Maak een query 
     $sql = "
-        INSERT INTO " . CRUD_TABLE . " (merk, type, prijs)
-        VALUES (:merk, :type, :prijs) 
+        INSERT INTO " . CRUD_TABLE . " (naam, soort, stijl)
+        VALUES (:naam, :soort, :stijl) 
     ";
 
     // Prepare query
     $stmt = $conn->prepare($sql);
     // Uitvoeren
     $stmt->execute([
-        ':merk'=>$_POST['merk'],
-        ':type'=>$_POST['type'],
-        ':prijs'=>$_POST['prijs']
+        ':naam'=>$_POST['naam'],
+        ':soort'=>$_POST['soort'],
+        ':stijl'=>$_POST['stijl']
     ]);
 
     

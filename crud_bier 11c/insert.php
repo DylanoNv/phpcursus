@@ -1,6 +1,6 @@
 <?php
     // functie: formulier en database insert fiets
-    // auteur: Vul hier je naam in
+    // auteur: Dylano Nietveld
 
     echo "<h1>Insert Fiets</h1>";
 
@@ -21,17 +21,23 @@
     <body>
         <form method="post">
 
-        <label for="merk">Merk:</label>
-        <input type="text" id="merk" name="merk" required><br>
+        <label for="naam">Naam:</label>
+        <input type="text" id="naam" name="naam" required><br>
 
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type" required><br>
+        <label for="soort">Soort:</label>
+        <input type="text" id="type" name="soort" required><br>
 
-        <label for="prijs">Prijs:</label>
-        <input type="number" id="prijs" name="prijs" required><br>
+        <label for="stijl">Stijl:</label>
+        <input type="number" id="stijl" name="stijl" required><br>
+
+        <label for="brouwcode">brouwcode:</label>
+        <input type="number" id="brouwcode" name="brouwcode" required><br>
+
+        <label for="alcohol">Alcohol:</label>
+        <input type="number" id="alcohol" name="alcohol" required><br>
 
         <input type="submit" name="btn_ins" value="Insert">
-        </form>
+        
         
         <br><br>
         <a href='index.php'>Home</a>
