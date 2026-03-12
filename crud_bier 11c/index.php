@@ -12,17 +12,10 @@
     // functie: Programma CRUD bier
     // auteur: Dylano Nietveld 
 
-    // Initialisatie
     include 'functions.php';
 
-    // Main
-
-    // Aanroep functie 
     crudMain();
     ?>
 
 </body>
 </html>
-
-
-
