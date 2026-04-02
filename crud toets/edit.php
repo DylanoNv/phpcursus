@@ -1,41 +1,44 @@
 <?php
-// Dylano Nietveld - opdr 11 CRUD
-// edit.php - fiets aanpassen
+// Dylano Nietveld - crud toets
+// edit.php - bestemming aanpassen
 
 require_once __DIR__ . "/db.php";
 
-$id = (int)($_GET["id"] ?? 0);
-if ($id <= 0) {
+$id = trim($_GET["id"] ?? "");
+if ($id === "") {
     header("Location: index.php");
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT * FROM fietsen WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM bestemming WHERE idbestemming = ?");
 $stmt->execute([$id]);
-$fiets = $stmt->fetch();
+$bestemming = $stmt->fetch();
 
-if (!$fiets) {
+if (!$bestemming) {
     header("Location: index.php");
     exit;
 }
 
 $errors = [];
-$merk = $fiets["merk"];
-$type = $fiets["type"];
-$prijs = $fiets["prijs"];
+$idbestemming = $bestemming["idbestemming"];
+$plaats = $bestemming["plaats"];
+$land = $bestemming["land"];
+$werelddeel = $bestemming["werelddeel"];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $merk = trim($_POST["merk"] ?? "");
-    $type = trim($_POST["type"] ?? "");
-    $prijs = trim($_POST["prijs"] ?? "");
+    $nieuwidbestemming = trim($_POST["idbestemming"] ?? "");
+    $plaats = trim($_POST["plaats"] ?? "");
+    $land = trim($_POST["land"] ?? "");
+    $werelddeel = trim($_POST["werelddeel"] ?? "");
 
-    if ($merk === "") $errors[] = "Merk is verplicht.";
-    if ($type === "") $errors[] = "Type is verplicht.";
-    if ($prijs === "" || !is_numeric($prijs)) $errors[] = "Prijs moet een getal zijn.";
+    if ($nieuwidbestemming === "") $errors[] = "ID bestemming is verplicht.";
+    if ($plaats === "") $errors[] = "Plaats is verplicht.";
+    if ($land === "") $errors[] = "Land is verplicht.";
+    if ($werelddeel === "") $errors[] = "Werelddeel is verplicht.";
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare("UPDATE fietsen SET merk = ?, type = ?, prijs = ? WHERE id = ?");
-        $stmt->execute([$merk, $type, $prijs, $id]);
+        $stmt = $pdo->prepare("UPDATE bestemming SET idbestemming = ?, plaats = ?, land = ?, werelddeel = ? WHERE idbestemming = ?");
+        $stmt->execute([$nieuwidbestemming, $plaats, $land, $werelddeel, $id]);
         header("Location: index.php");
         exit;
     }
@@ -45,10 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="nl">
 <head>
     <meta charset="utf-8">
-    <title>Fiets aanpassen</title>
+    <title>Bestemming aanpassen</title>
 </head>
 <body>
-    <h1>Fiets aanpassen</h1>
+    <h1>Bestemming aanpassen</h1>
 
     <?php if (!empty($errors)): ?>
         <ul>
@@ -60,18 +63,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <form method="post">
         <p>
-            <label>Merk<br>
-                <input type="text" name="merk" value="<?= htmlspecialchars($merk) ?>">
+            <label>ID bestemming<br>
+                <input type="text" name="idbestemming" value="<?= htmlspecialchars($idbestemming) ?>">
             </label>
         </p>
         <p>
-            <label>Type<br>
-                <input type="text" name="type" value="<?= htmlspecialchars($type) ?>">
+            <label>Plaats<br>
+                <input type="text" name="plaats" value="<?= htmlspecialchars($plaats) ?>">
             </label>
         </p>
         <p>
-            <label>Prijs<br>
-                <input type="text" name="prijs" value="<?= htmlspecialchars($prijs) ?>">
+            <label>Land<br>
+                <input type="text" name="land" value="<?= htmlspecialchars($land) ?>">
+            </label>
+        </p>
+        <p>
+            <label>Werelddeel<br>
+                <input type="text" name="werelddeel" value="<?= htmlspecialchars($werelddeel) ?>">
             </label>
         </p>
         <button type="submit">Opslaan</button>

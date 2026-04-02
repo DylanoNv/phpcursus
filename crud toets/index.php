@@ -1,17 +1,17 @@
 <?php
-// Dylano Nietveld - opdr 11 CRUD
+// Dylano Nietveld - crud toets
 // index.php - homepage
 
 require_once __DIR__ . "/db.php";
 
-$stmt = $pdo->query("SELECT * FROM fietsen ORDER BY id DESC");
-$fietsen = $stmt->fetchAll();
+$stmt = $pdo->query("SELECT * FROM bestemming ORDER BY idbestemming DESC");
+$bestemmingen = $stmt->fetchAll();
 ?>
 <!doctype html>
 <html lang="nl">
 <head>
     <meta charset="utf-8">
-    <title>Fietsenshop</title>
+    <title>Reizen</title>
     <style>
         table { border-collapse: collapse; }
         th, td { border: 1px solid #000; padding: 6px 10px; }
@@ -20,28 +20,28 @@ $fietsen = $stmt->fetchAll();
     </style>
 </head>
 <body>
-    <h1>Fietsenshop</h1>
+    <h1>Reizen</h1>
 
-    <p><a href="create.php">Fiets toevoegen</a></p>
+    <p><a href="create.php">Bestemming toevoegen</a></p>
 
     <table>
         <thead>
             <tr>
-                <th>Merk</th>
-                <th>Type</th>
-                <th>Prijs</th>
-                <th>Verander</th>
+                <th>Plaats</th>
+                <th>Land</th>
+                <th>Werelddeel</th>
+                <th>Wijzig</th>
                 <th>Verwijder</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($fietsen as $fiets): ?>
+            <?php foreach ($bestemmingen as $bestemming): ?>
                 <tr>
-                    <td><?= htmlspecialchars($fiets["merk"]) ?></td>
-                    <td><?= htmlspecialchars($fiets["type"]) ?></td>
-                    <td><?= htmlspecialchars($fiets["prijs"]) ?></td>
-                    <td><a href="edit.php?id=<?= $fiets["id"] ?>">Wijzig</a></td>
-                    <td><a href="delete.php?id=<?= $fiets["id"] ?>" onclick="return confirm('Weet je zeker dat je de fiets wilt verwijderen?')">Verwijder</a></td>
+                    <td><?= htmlspecialchars($bestemming["plaats"]) ?></td>
+                    <td><?= htmlspecialchars($bestemming["land"]) ?></td>
+                    <td><?= htmlspecialchars($bestemming["werelddeel"]) ?></td>
+                    <td><a href="edit.php?id=<?= $bestemming["idbestemming"] ?>">Wijzig</a></td>
+                    <td><a href="delete.php?id=<?= $bestemming["idbestemming"] ?>" onclick="return confirm('Weet je zeker dat je deze bestemming wilt verwijderen?')">Verwijder</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

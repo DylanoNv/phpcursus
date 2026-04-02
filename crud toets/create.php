@@ -1,26 +1,29 @@
 <?php
-// Dylano Nietveld - opdr 11 CRUD
-// create.php - fiets adden
+// Dylano Nietveld - crud toets
+// create.php - bestemming toevoegen
 
 require_once __DIR__ . "/db.php";
 
 $errors = [];
-$merk = "";
-$type = "";
-$prijs = "";
+$idbestemming = "";
+$plaats = "";
+$land = "";
+$werelddeel = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $merk = trim($_POST["merk"] ?? "");
-    $type = trim($_POST["type"] ?? "");
-    $prijs = trim($_POST["prijs"] ?? "");
+    $idbestemming = trim($_POST["idbestemming"] ?? "");
+    $plaats = trim($_POST["plaats"] ?? "");
+    $land = trim($_POST["land"] ?? "");
+    $werelddeel = trim($_POST["werelddeel"] ?? "");
 
-    if ($merk === "") $errors[] = "Merk is verplicht.";
-    if ($type === "") $errors[] = "Type is verplicht.";
-    if ($prijs === "" || !is_numeric($prijs)) $errors[] = "Prijs moet een getal zijn.";
+    if ($idbestemming === "") $errors[] = "ID bestemming is verplicht.";
+    if ($plaats === "") $errors[] = "Plaats is verplicht.";
+    if ($land === "") $errors[] = "Land is verplicht.";
+    if ($werelddeel === "") $errors[] = "Werelddeel is verplicht.";
 
     if (empty($errors)) {
-        $stmt = $pdo->prepare("INSERT INTO fietsen (merk, type, prijs) VALUES (?, ?, ?)");
-        $stmt->execute([$merk, $type, $prijs]);
+        $stmt = $pdo->prepare("INSERT INTO bestemming (idbestemming, plaats, land, werelddeel) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$idbestemming, $plaats, $land, $werelddeel]);
         header("Location: index.php");
         exit;
     }
@@ -30,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="nl">
 <head>
     <meta charset="utf-8">
-    <title>Fiets toevoegen</title>
+    <title>Bestemming toevoegen</title>
 </head>
 <body>
-    <h1>Fiets toevoegen</h1>
+    <h1>Bestemming toevoegen</h1>
 
     <?php if (!empty($errors)): ?>
         <ul>
@@ -45,18 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <form method="post">
         <p>
-            <label>Merk<br>
-                <input type="text" name="merk" value="<?= htmlspecialchars($merk) ?>">
+            <label>ID bestemming<br>
+                <input type="text" name="idbestemming" value="<?= htmlspecialchars($idbestemming) ?>">
             </label>
         </p>
         <p>
-            <label>Type<br>
-                <input type="text" name="type" value="<?= htmlspecialchars($type) ?>">
+            <label>Plaats<br>
+                <input type="text" name="plaats" value="<?= htmlspecialchars($plaats) ?>">
             </label>
         </p>
         <p>
-            <label>Prijs<br>
-                <input type="text" name="prijs" value="<?= htmlspecialchars($prijs) ?>">
+            <label>Land<br>
+                <input type="text" name="land" value="<?= htmlspecialchars($land) ?>">
+            </label>
+        </p>
+        <p>
+            <label>Werelddeel<br>
+                <input type="text" name="werelddeel" value="<?= htmlspecialchars($werelddeel) ?>">
             </label>
         </p>
         <button type="submit">Opslaan</button>

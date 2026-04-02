@@ -1,9 +1,9 @@
 <?php
-// Dylano Nietveld - opdr 11 CRUD
+// Dylano Nietveld - crud toets
 // db.php - database connecten
 
 $host = "localhost";
-$db   = "fietsenshop";
+$db   = "reizen";
 $user = "root";
 $pass = "";
 $charset = "utf8mb4";
