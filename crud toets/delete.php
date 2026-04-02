@@ -1,15 +1,14 @@
 <?php
-// auteur: Dylano Nietveld
-// functie: verwijder een bier op basis van de id
-include 'functions.php';
+// Dylano Nietveld - opdr 11 CRUD
+// delete.php - fiets verwijderen
 
-if(isset($_GET['id'])){
+require_once __DIR__ . "/db.php";
 
-    if(deleteRecord($_GET['id']) == true){
-        echo '<script>alert("Biercode: ' . $_GET['id'] . ' is verwijderd")</script>';
-        echo "<script> location.replace('index.php'); </script>";
-    } else {
-        echo '<script>alert("Bier is NIET verwijderd")</script>';
-    }
+$id = (int)($_GET["id"] ?? 0);
+if ($id > 0) {
+    $stmt = $pdo->prepare("DELETE FROM fietsen WHERE id = ?");
+    $stmt->execute([$id]);
 }
-?>
+
+header("Location: index.php");
+exit;
