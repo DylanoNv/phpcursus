@@ -1,6 +1,6 @@
 <?php
 // Dylano Nietveld - crud toets
-// delete.php - bestemming verwijderen
+// delete.php - Bewerkt voor tabel bestemming in database reizen
 
 require_once __DIR__ . "/db.php";
 

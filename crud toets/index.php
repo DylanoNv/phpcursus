@@ -1,6 +1,6 @@
 <?php
 // Dylano Nietveld - crud toets
-// index.php - homepage
+// index.php - Bewerkt voor tabel bestemming in database reizen
 
 require_once __DIR__ . "/db.php";
 
@@ -20,7 +20,7 @@ $bestemmingen = $stmt->fetchAll();
     </style>
 </head>
 <body>
-    <h1>Reizen</h1>
+    <h1>Reizen Dylano Nietveld crud toets</h1>
 
     <p><a href="create.php">Bestemming toevoegen</a></p>
 

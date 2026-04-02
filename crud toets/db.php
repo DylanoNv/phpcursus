@@ -1,6 +1,6 @@
 <?php
 // Dylano Nietveld - crud toets
-// db.php - database connecten
+// db.php - Bewerkt voor tabel bestemming in database reizen
 
 $host = "localhost";
 $db   = "reizen";
