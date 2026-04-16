@@ -1,12 +1,11 @@
 <?php
 // auteur: Dylano Nietveld
-// functie: configuratiebestand
+// functie: config crudtoets
 
-define("DATABASE", "bieren");
+define("DATABASE", "3dplus");
 define("SERVERNAME", "localhost");
 define("USERNAME", "root");
 define("PASSWORD", "");
 
-define("CRUD_TABLE", "brouwer");
-
+define("CRUD_TABLE", "genre");
 ?>
