@@ -4,7 +4,7 @@
 
 include_once "config.php";
 
-function connectDb(){
+ function connectDb(){
     $servername = SERVERNAME;
     $username = USERNAME;
     $password = PASSWORD;
@@ -12,33 +12,38 @@ function connectDb(){
    
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        //echo "Connected successfully";
         return $conn;
     } 
     catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
-}
 
-function crudMain(){
+ }
 
-    // Menu-item insert
+ function crudMain(){
+
+    // Menu-item   insert
     $txt = "
-    <h1>Crud Bier</h1>
+    <h1>Crud Brouwers</h1>
     <nav>
-		<a href='insert.php'>Toevoegen nieuwe bier</a>
+		<a href='insert.php'>Toevoegen nieuwe brouwer</a>
     </nav><br>";
     echo $txt;
 
-    // Haal alle bier records uit de tabel
+    // Haal alle brouwers record uit de tabel 
     $result = getData(CRUD_TABLE);
 
-    // print table
+    //print table
     printCrudTabel($result);
-}
+    
+ }
 
-function getData($table){
+ // selecteer de data uit de opgeven table
+ function getData($table){
     // Connect database
     $conn = connectDb();
 
@@ -49,33 +54,21 @@ function getData($table){
     $result = $query->fetchAll();
 
     return $result;
-}
+ }
 
-// selecteer de rij van de opgegeven biercode uit de table bier
-function getRecord($id){
+ // selecteer de rij van de opgeven id uit de table brouwer
+ function getRecord($id){
     // Connect database
     $conn = connectDb();
 
     // Select data uit de opgegeven table methode prepare
-    $sql = "SELECT * FROM " . CRUD_TABLE . " WHERE biercode = :id";
+    $sql = "SELECT * FROM " . CRUD_TABLE . " WHERE brouwcode = :id";
     $query = $conn->prepare($sql);
     $query->execute([':id'=>$id]);
     $result = $query->fetch();
 
     return $result;
-}
-
-// haal alle brouwers op voor dropdown
-function getBrouwers(){
-    $conn = connectDb();
-
-    $sql = "SELECT brouwcode, naam FROM brouwer ORDER BY naam";
-    $query = $conn->prepare($sql);
-    $query->execute();
-    $result = $query->fetchAll();
-
-    return $result;
-}
+ }
 
 
 // Function 'printCrudTabel' print een HTML-table met data uit $result 
@@ -85,13 +78,12 @@ function printCrudTabel($result){
     $table = "<table>";
 
     // Print header table
-
-    // haal de kolommen uit de eerste rij [0] van het array $result mbv array_keys
     $headers = array_keys($result[0]);
     $table .= "<tr>";
     foreach($headers as $header){
         $table .= "<th>" . $header . "</th>";   
     }
+
     // Voeg actie kopregel toe
     $table .= "<th colspan=2>Actie</th>";
     $table .= "</tr>";
@@ -100,6 +92,7 @@ function printCrudTabel($result){
     foreach ($result as $row) {
         
         $table .= "<tr>";
+
         // print elke kolom
         foreach ($row as $cell) {
             $table .= "<td>" . $cell . "</td>";  
@@ -107,13 +100,13 @@ function printCrudTabel($result){
         
         // Wijzig knopje
         $table .= "<td>
-            <form method='post' action='update.php?id=$row[biercode]'>       
+            <form method='post' action='update.php?id=$row[brouwcode]' >       
                 <button>Wzg</button>	 
             </form></td>";
 
         // Delete knopje
         $table .= "<td>
-            <form method='post' action='delete.php?id=$row[biercode]'>       
+            <form method='post' action='delete.php?id=$row[brouwcode]' >       
                 <button>Verwijder</button>	 
             </form></td>";
 
@@ -131,14 +124,11 @@ function updateRecord($row){
     $conn = connectDb();
 
     // Maak een query 
-    $sql = "UPDATE " . CRUD_TABLE . "
-        SET 
-            naam = :naam, 
-            soort = :soort, 
-            stijl = :stijl,
-            alcohol = :alcohol,
-            brouwcode = :brouwcode
-        WHERE biercode = :biercode
+    $sql = "UPDATE " . CRUD_TABLE .
+    " SET 
+        naam = :naam, 
+        land = :land
+    WHERE brouwcode = :id
     ";
 
     // Prepare query
@@ -146,12 +136,9 @@ function updateRecord($row){
 
     // Uitvoeren
     $stmt->execute([
-        ':naam' => $row['naam'],
-        ':soort' => $row['soort'],
-        ':stijl' => $row['stijl'],
-        ':alcohol' => $row['alcohol'],
-        ':brouwcode' => $row['brouwcode'],
-        ':biercode' => $row['biercode']
+        ':naam'=>$row['naam'],
+        ':land'=>$row['land'],
+        ':id'=>$row['id']
     ]);
 
     // test of database actie is gelukt
@@ -165,8 +152,8 @@ function insertRecord($post){
 
     // Maak een query 
     $sql = "
-        INSERT INTO " . CRUD_TABLE . " (naam, soort, stijl, alcohol, brouwcode)
-        VALUES (:naam, :soort, :stijl, :alcohol, :brouwcode) 
+        INSERT INTO " . CRUD_TABLE . " (naam, land)
+        VALUES (:naam, :land) 
     ";
 
     // Prepare query
@@ -175,13 +162,9 @@ function insertRecord($post){
     // Uitvoeren
     $stmt->execute([
         ':naam'=>$post['naam'],
-        ':soort'=>$post['soort'],
-        ':stijl'=>$post['stijl'],
-        ':alcohol'=>$post['alcohol'],
-        ':brouwcode'=>$post['brouwcode']
+        ':land'=>$post['land']
     ]);
 
-    
     // test of database actie is gelukt
     $retVal = ($stmt->rowCount() == 1) ? true : false ;
     return $retVal;  
@@ -191,18 +174,28 @@ function deleteRecord($id){
 
     // Connect database
     $conn = connectDb();
+
+    // Check of brouwer in gebruik is in tabel bier
+    $sql = "SELECT COUNT(*) AS aantal FROM bier WHERE brouwcode = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([':id'=>$id]);
+    $result = $stmt->fetch();
+
+    if($result['aantal'] > 0){
+        return "in_gebruik";
+    }
     
     // Maak een query 
     $sql = "
     DELETE FROM " . CRUD_TABLE . 
-    " WHERE biercode = :id";
+    " WHERE brouwcode = :id";
 
     // Prepare query
     $stmt = $conn->prepare($sql);
 
     // Uitvoeren
     $stmt->execute([
-    ':id'=>$id
+        ':id'=>$id
     ]);
 
     // test of database actie is gelukt

@@ -9,11 +9,13 @@
 <body>
 
     <?php
-    // functie: Programma CRUD bier
-    // auteur: Dylano Nietveld 
+    // functie: Programma CRUD brouwers
+    // auteur: Dylano Nietveld   
 
+    // Initialisatie
     include 'functions.php';
 
+    // Aanroep functie 
     crudMain();
     ?>
 
