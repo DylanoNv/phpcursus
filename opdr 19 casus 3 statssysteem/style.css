@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #222;
+}
+
+form {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+select, button, a {
+    margin: 5px;
+    padding: 6px;
+}
+
+table {
+    border-collapse: collapse;
+    background: white;
+    width: 100%;
+}
+
+th {
+    background-color: #ddd;
+}
+
+td, th {
+    padding: 8px;
+}
