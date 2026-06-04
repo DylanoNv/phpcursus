@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f4f4f4;
+}
+
+h1, h2 {
+    color: #222;
+}
+
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.resultaat {
+    background: #dff0d8;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+th {
+    background-color: #ddd;
+}
